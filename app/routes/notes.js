@@ -22,7 +22,6 @@ router.get('/search', withAuth, async (req, res) => {
     let notes = await Note.find({ author: req.user._id }).find({
       $text: { $search: query }
     });
-    console.log(notes);
     res.json(notes);
   } catch (error) {
     res.json({ error: error }).status(500);
@@ -55,7 +54,7 @@ router.put('/:id', withAuth, async (req, res) => {
   try {
     let note = await Note.findById(id);
     if (isOwner(req.user, note)) {
-      let note = await Note.findOneAndUpdate(
+        note = await Note.findOneAndUpdate(
         {_id: id},
         // $set é um operador do mongo
         { $set: { title: title, body: body } },
